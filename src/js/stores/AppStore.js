@@ -17,6 +17,10 @@ var AppStore = assign({}, EventEmitter.prototype, {
     return _contacts;
   },
 
+  setContacts: function(contacts) {
+    _contacts = contacts;
+  },
+
   emitChange: function(){
     this.emit(CHANGE_EVENT);
   },
@@ -39,8 +43,11 @@ AppDispatcher.register(function(payload) {
   var action = payload.action;
   switch(action.actionType) {
     case AppConstants.SAVE_CONTACT:
-
       AppStore.saveContact(action.contact);
+      AppAPI.saveContact(action.contact);
+      break;
+    case AppConstants.RECEIVE_CONTACTS:
+      AppStore.setContacts(action.contacts);
       break;
     default:
       return true;
